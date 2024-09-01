@@ -1,0 +1,32 @@
+General Revisions Log:
+Added type hinting: 
+This improves code clarity and enables better IDE support, which can lead to fewer bugs and easier maintenance.
+
+Refactored payload creation: A new create_payload function centralizes the logic for creating payload dictionaries, reducing code duplication and improving maintainability.
+
+Simplified conditional statements: Particularly in the new create_payload function, making the code more concise and easier to read.
+
+Updated docstrings: To reflect the changes and provide clearer documentation.
+
+Recommended use of f-strings: For more readable and efficient string formatting, although not directly visible in this particular code.
+
+Type hinting: Added throughout the module for better code clarity and IDE support.
+
+Refactoring: Common operations have been extracted into separate functions:
+(e.g., encrypt_data, decrypt_data, get_cipher_suite, get_pickle_path) to reduce code duplication and improve maintainability.
+
+Improved error handling: 
+custom AuthenticationError exception has been introduced for more specific error messaging.
+
+Resource management: 
+Context managers are now used for file operations to ensure proper resource handling.
+
+Enhanced security: 
+keyring library is now used to store the encryption passcode more securely.
+
+Logging: 
+Added logging throughout - better debugging / monitoring.
+
+String formatting: F-strings implemented /stronger formatting
+
+Revised conditional statements
