@@ -1,32 +1,283 @@
-General Revisions Log:
-Added type hinting: 
-This improves code clarity and enables better IDE support, which can lead to fewer bugs and easier maintenance.
 
-Refactored payload creation: A new create_payload function centralizes the logic for creating payload dictionaries, reducing code duplication and improving maintainability.
 
-Simplified conditional statements: Particularly in the new create_payload function, making the code more concise and easier to read.
+# Summary of Modifications to orders.py
 
-Updated docstrings: To reflect the changes and provide clearer documentation.
+1. Type Hinting
+   - Added comprehensive type hints to all functions and method signatures
+   - Improved code clarity and IDE support
 
-Recommended use of f-strings: For more readable and efficient string formatting, although not directly visible in this particular code.
+2. Asynchronous Programming
+   - Implemented async versions of all main functions
+   - Added a TDAClientSession class for managing aiohttp.ClientSession
+   - Improved performance for high-volume scenarios
 
-Type hinting: Added throughout the module for better code clarity and IDE support.
+3. Error Handling
+   - Implemented more specific exceptions (e.g., TDAAPIError)
+   - Added comprehensive error handling in the TDAClientSession class
+   - Improved input validation, especially for parameters like status and max_results
 
-Refactoring: Common operations have been extracted into separate functions:
-(e.g., encrypt_data, decrypt_data, get_cipher_suite, get_pickle_path) to reduce code duplication and improve maintainability.
+4. Enhancements
+   - Introduced an OrderStatus enum for better type safety and code readability
+   - Implemented retry logic using the tenacity library for transient errors
+   - Added a bulk order placement function (place_bulk_orders) to reduce API calls
 
-Improved error handling: 
-custom AuthenticationError exception has been introduced for more specific error messaging.
+5. Caching
+   - Implemented lru_cache for the get_order function
+   - Reduced API calls for frequently accessed, non-volatile data
 
-Resource management: 
-Context managers are now used for file operations to ensure proper resource handling.
+6. Testing
+   - Added comprehensive unit tests for all functions, including async versions
+   - Implemented tests for various error scenarios, including rate limit errors
 
-Enhanced security: 
-keyring library is now used to store the encryption passcode more securely.
+7. Documentation
+   - Enhanced function docstrings with more detailed parameter and return type information
+   - Added inline comments for complex logic
 
-Logging: 
-Added logging throughout - better debugging / monitoring.
+8. Backwards Compatibility
+   - Maintained synchronous versions of functions for backwards compatibility
 
-String formatting: F-strings implemented /stronger formatting
+9. Code Structure
+   - Refactored code for better readability and maintainability
+   - Organized imports and constants at the top of the module
 
-Revised conditional statements
+10. New Features
+    - Added a place_bulk_orders function for efficient multiple order placement
+
+11. Performance Optimization
+    - Implemented retry logic with exponential backoff for better handling of transient errors
+    - Used aiohttp for async HTTP requests, potentially improving performance in high-volume scenarios
+
+12. Usability Improvements
+    - Enhanced input validation to provide clearer error messages to users
+    - Improved the structure of the TDAClientSession for easier resource management
+
+
+
+
+# Summary of Modifications to markets.py
+
+1. Type Hinting
+   - Added comprehensive type hints to all functions and method signatures
+   - Improved code clarity and IDE support
+
+2. Asynchronous Programming
+   - Implemented async versions of all main functions (get_hours_for_markets, get_hours_for_market, get_movers)
+   - Added a TDAClientSession class for managing aiohttp.ClientSession
+   - Improved performance for high-volume scenarios
+
+3. Error Handling
+   - Implemented more specific exceptions (e.g., TDAAPIError)
+   - Added comprehensive error handling in the TDAClientSession class
+   - Improved input validation for parameters like markets, date, direction, and change
+
+4. Enums and Constants
+   - Introduced Enum classes for Market, MarketIndex, Direction, and ChangeType
+   - Improved type safety and code readability
+
+5. Caching
+   - Implemented lru_cache for the get_hours_for_market function
+   - Reduced API calls for frequently accessed, non-volatile data
+
+6. Retry Mechanism
+   - Implemented retry logic using the tenacity library
+   - Added exponential backoff for handling transient errors
+
+7. Testing
+   - Added comprehensive unit tests for all functions, including async versions
+   - Implemented tests for various error scenarios, including rate limit errors
+
+8. Input Validation
+   - Added a validate_date function to ensure correct date format
+   - Improved validation for enum-based parameters (market, direction, change)
+
+9. Documentation
+   - Enhanced function docstrings with more detailed parameter and return type information
+   - Added inline comments for complex logic
+
+10. Code Structure
+    - Refactored code for better readability and maintainability
+    - Organized imports and constants at the top of the module
+
+11. Performance Optimization
+    - Used aiohttp for async HTTP requests, improving performance in high-volume scenarios
+    - Implemented caching to reduce redundant API calls
+
+12. Usability Improvements
+    - Enhanced input validation to provide clearer error messages to users
+    - Improved the structure of the TDAClientSession for easier resource management
+
+13. Logging
+    - Added logging throughout the module for better debugging and monitoring capabilities
+
+14. Context Management
+    - Implemented TDAClientSession as a context manager for better resource handling
+
+
+
+# Summary of Modifications to accounts.py
+
+1. Type Hinting
+   - Added comprehensive type hints to all functions and method signatures
+   - Improved code clarity and IDE support
+
+2. Asynchronous Programming
+   - Implemented async versions of all main functions (get_accounts, get_account, get_transactions, get_transaction)
+   - Added a TDAClientSession class for managing aiohttp.ClientSession
+   - Improved performance for high-volume scenarios
+
+3. Error Handling
+   - Implemented more specific exceptions (e.g., TDAAPIError, RateLimitExceeded)
+   - Added comprehensive error handling in the TDAClientSession class
+   - Improved input validation for parameters
+
+4. Rate Limiting
+   - Implemented a rate limiter using the `ratelimit` library
+   - Added a custom RateLimitExceeded exception
+   - Integrated Redis for distributed rate limiting across multiple instances
+
+5. Caching
+   - Implemented lru_cache for frequently accessed, non-volatile data
+   - Added option to use Redis for distributed caching
+
+6. Circuit Breaker Pattern
+   - Implemented a circuit breaker using the `pybreaker` library
+   - Added configuration for failure threshold and recovery timeout
+
+7. Testing
+   - Added comprehensive unit tests for all functions, including async versions
+   - Implemented tests for various error scenarios, including rate limit errors and circuit breaker behavior
+
+8. Logging
+   - Added detailed logging throughout the module for better debugging and monitoring
+
+9. Documentation
+   - Enhanced function docstrings with more detailed parameter and return type information
+   - Added inline comments for complex logic
+
+10. Code Structure
+    - Refactored code for better readability and maintainability
+    - Organized imports and constants at the top of the module
+
+11. Performance Optimization
+    - Used aiohttp for async HTTP requests, improving performance in high-volume scenarios
+    - Implemented caching and rate limiting to optimize API usage
+
+12. Usability Improvements
+    - Enhanced input validation to provide clearer error messages to users
+    - Improved the structure of the TDAClientSession for easier resource management
+
+13. Configuration Management
+    - Added configuration variables for Redis and circuit breaker settings
+
+14. Backwards Compatibility
+    - Maintained synchronous versions of functions for backwards compatibility
+
+15. Security Enhancements
+    - Implemented more secure handling of sensitive data using environment variables
+
+
+# Summary of Modifications to helper.py
+
+1. Type Hinting
+   - Added comprehensive type hints to all functions and method signatures
+   - Improved code clarity and IDE support
+
+2. Asynchronous Programming
+   - Implemented async versions of request functions (async_request_get, async_request_post, async_request_delete)
+   - Added support for aiohttp for asynchronous HTTP requests
+   - Improved performance for high-volume scenarios
+
+3. Error Handling
+   - Implemented more specific exceptions (e.g., TDAAPIError, RateLimitExceeded)
+   - Enhanced error handling in request functions with more detailed error messages
+   - Added custom exceptions for different types of API errors (e.g., ClientError, ServerError)
+
+4. Rate Limiting
+   - Implemented a rate limiter using the `ratelimit` library
+   - Added a redis_rate_limit decorator for distributed rate limiting
+
+5. Caching
+   - Implemented lru_cache for the get_order_number function to cache frequently used data
+   - Improved efficiency by reducing redundant computations
+
+6. Logging
+   - Added detailed logging throughout the module for better debugging and monitoring
+   - Implemented log messages for various error scenarios and important operations
+
+7. Code Refactoring
+   - Refactored common operations into separate functions to reduce code duplication
+   - Improved overall code structure and readability
+
+8. Input Validation
+   - Enhanced input validation in various functions to prevent invalid API calls
+   - Added more robust checks for function parameters
+
+9. Documentation
+   - Enhanced function docstrings with more detailed parameter and return type information
+   - Added inline comments for complex logic
+
+10. Performance Optimization
+    - Implemented retry logic with exponential backoff for handling transient errors
+    - Used aiohttp for async HTTP requests, potentially improving performance in high-volume scenarios
+
+11. Security Enhancements
+    - Implemented more secure handling of sensitive data
+    - Added checks to prevent exposure of sensitive information in logs
+
+12. Utility Functions
+    - Added new utility functions to support common operations across the library
+    - Improved existing utility functions for better efficiency and usability
+
+13. Backwards Compatibility
+    - Maintained synchronous versions of functions for backwards compatibility
+    - Added deprecation warnings for any functions planned for removal in future versions
+
+14. Testing Support
+    - Added helper functions and decorators to support unit testing in other modules
+    - Implemented mock objects and functions for testing API interactions
+
+15. Configuration Management
+    - Added functions to manage and retrieve configuration settings
+    - Implemented a more flexible approach to handling global variables and settings
+
+
+# Summary of modifications to stocks.py module
+
+1. Asynchronous operations:
+   - Introduced async versions of `get_quote` and `get_quotes` functions
+   - Added `get_quote_async` and `get_quotes_async` to allow concurrent API calls
+
+2. Caching implementation:
+   - Added `@lru_cache` decorator to `get_quote_async`, `search_instruments`, and `get_instrument` functions
+   - Set maxsize to 128 for efficient caching of frequently accessed data
+
+3. Error handling improvements:
+   - Removed the `jsonify` parameter from all functions
+   - Functions now always return JSON responses, simplifying the API
+
+4. Code simplification:
+   - Refactored `get_option_chains` to use `**kwargs` for optional parameters
+   - Implemented dictionary comprehension for handling optional parameters in `get_option_chains`
+
+5. Naming convention updates:
+   - Changed some parameter names to follow Python's snake_case convention
+   - Example: `needExtendedHoursData` to `need_extended_hours_data`
+
+6. Function signature changes:
+   - Updated function signatures to reflect new parameter names and removed unnecessary parameters
+
+7. Import additions:
+   - Added imports for `asyncio` and `aiohttp` to support asynchronous operations
+   - Imported `lru_cache` from `functools` for caching implementation
+
+8. Documentation updates:
+   - Simplified function docstrings while maintaining essential information
+   - Updated comments to reflect new functionality and parameter changes
+
+9. Return value standardization:
+   - Standardized return values across functions to always return JSON data
+
+10. Performance optimizations:
+    - Implemented asynchronous operations for improved performance when fetching multiple quotes
+    - Added caching to reduce redundant API calls and improve efficiency
+
