@@ -1,0 +1,35 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim-buster
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies and clean up in a single step
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libc6-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copy and install Python dependencies first to leverage Docker cache
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+# Install robin-stocks
+RUN pip install --no-cache-dir robin-stocks
+
+# Copy the rest of the application code
+COPY . /app/
+
+# Make sure the app directory is owned by the non-root user
+RUN adduser --disabled-password --gecos '' appuser && chown -R appuser:appuser /app
+USER appuser
+
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
